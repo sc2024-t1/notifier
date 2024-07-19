@@ -1,6 +1,6 @@
 from typing import Callable, Optional
 
-from telebot import TeleBot
+from src.bot import Notifier
 
 
 class Weekdays:
@@ -39,7 +39,7 @@ class Weekdays:
 
 
 class WeekdayPicker:
-    def __init__(self, bot: TeleBot, callback: Callable, weekdays: Optional[Weekdays] = None, *args, **kwargs):
+    def __init__(self, bot: Notifier, callback: Callable, weekdays: Optional[Weekdays] = None, *args, **kwargs):
         """
         A UI for picking weekdays.
         :param bot: The bot instance.
@@ -49,7 +49,7 @@ class WeekdayPicker:
         :param args: The positional arguments to pass to the callback.
         :param kwargs: The keyword arguments to pass to the callback.
         """
-        self.bot: TeleBot = bot
+        self.bot: Notifier = bot
         self.callback: Callable = callback
         self.args = args
         self.kwargs = kwargs

@@ -1,7 +1,7 @@
 from pymongo.database import Database
-from telebot import TeleBot
 from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
+from src.bot import Notifier
 from src.database.character import Character
 from src.database.user import User
 
@@ -21,8 +21,8 @@ class SettingsFlow:
     This isn't actually a flow, just a set of commands.
     """
 
-    def __init__(self, bot: TeleBot, database: Database):
-        self.bot: TeleBot = bot
+    def __init__(self, bot: Notifier, database: Database):
+        self.bot: Notifier = bot
         self.database: Database = database
 
     def start(self, message: Message):
@@ -52,7 +52,7 @@ class SettingsFlow:
         self.bot.send_message(call.message.chat.id, f"你選擇了: {character.prompt}")  # TODO: 改進這個訊息
 
 
-def setup(bot: TeleBot, database: Database):
+def setup(bot: Notifier, database: Database):
     flow = SettingsFlow(bot, database)
 
     bot.register_message_handler(flow.start, commands=["start"])

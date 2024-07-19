@@ -2,9 +2,10 @@ from os import getenv, listdir
 
 from dotenv import load_dotenv
 from google import generativeai
-from pymongo import MongoClient
 from pymongo.database import Database
 from telebot import TeleBot
+
+from src.bot import Notifier
 
 
 def main():
@@ -12,10 +13,9 @@ def main():
 
     generativeai.configure(api_key=getenv("GEMINI_API_KEY"))
 
-    bot = TeleBot(getenv("BOT_TOKEN"))
-    database = MongoClient(getenv("MONGO_URI")).get_database("notifier")
+    bot = Notifier(getenv("BOT_TOKEN"))
 
-    register_flows(bot, database)
+    register_flows(bot, bot.database)
 
     bot.infinity_polling()
 

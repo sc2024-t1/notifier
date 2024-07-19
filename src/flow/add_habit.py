@@ -1,15 +1,15 @@
 from pymongo.database import Database
-from telebot import TeleBot
 from telebot.types import Message
 
+from src.bot import Notifier
 from src.database.habit import Habit
 from src.ui.weekday_picker import Weekdays, WeekdayPicker
 from src.utils import ensure_user_settings
 
 
 class AddHabitFlow:
-    def __init__(self, bot: TeleBot, database: Database):
-        self.bot: TeleBot = bot
+    def __init__(self, bot: Notifier, database: Database):
+        self.bot: Notifier = bot
         self.database: Database = database
 
     def add_habit(self, message: Message):
@@ -65,7 +65,7 @@ class AddHabitFlow:
         self.bot.send_message(message.chat.id, "Habit added successfully!")  # TODO: 編輯這個訊息
 
 
-def setup(bot: TeleBot, database: Database):
+def setup(bot: Notifier, database: Database):
     flow = AddHabitFlow(bot, database)
 
     bot.register_message_handler(flow.add_habit, commands=["add_habit"])
