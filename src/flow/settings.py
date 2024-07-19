@@ -13,7 +13,7 @@ def generate_markup() -> InlineKeyboardMarkup:
     return markup
 
 
-class UtilitiesFlow:
+class SettingsFlow:
     """
     This isn't actually a flow, just some utility commands.
     """
@@ -34,7 +34,7 @@ class UtilitiesFlow:
 
 
 def setup(bot: TeleBot, database: Database):
-    flow = UtilitiesFlow(bot, database)
+    flow = SettingsFlow(bot, database)
 
     bot.register_message_handler(flow.start, commands=["start"])
     bot.register_message_handler(flow.help, commands=["help"])
