@@ -11,11 +11,6 @@ class NotifyFlow:
         self.bot: Notifier = bot
         self.database: Database = database
 
-    def on_message(self, message: Message):
-        # TODO: 處理日常聊天
-        # TODO: 確認這個訊息是否是回覆自提醒
-        pass
-
     def notify(self, user_id: int):
         """
         Notifies the user for their upcoming habits. Ignores the time settings
