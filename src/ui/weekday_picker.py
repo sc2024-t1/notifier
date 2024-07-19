@@ -1,5 +1,7 @@
 from typing import Callable, Optional
 
+from telebot.types import CallbackQuery, Message, InlineKeyboardMarkup, InlineKeyboardButton
+
 from src.bot import Notifier
 
 
@@ -24,6 +26,12 @@ class Weekdays:
     def is_enabled(self, day: int) -> bool:
         return bool(self.flags & day)
 
+    def toggle(self, day: int) -> None:
+        if self.is_enabled(day):
+            self.disable(day)
+        else:
+            self.enable(day)
+
     def __str__(self) -> str:
         days = [
             ("Monday", self.MONDAY),
@@ -39,10 +47,12 @@ class Weekdays:
 
 
 class WeekdayPicker:
-    def __init__(self, bot: Notifier, callback: Callable, weekdays: Optional[Weekdays] = None, *args, **kwargs):
+    def __init__(self, bot: Notifier, chat_id: int, callback: Callable, weekdays: Optional[Weekdays] = None, *args,
+                 **kwargs):
         """
         A UI for picking weekdays.
         :param bot: The bot instance.
+
         :param callback: The callback to call when the user finishes picking the weekdays.
         The callback should accept the chat_id as first argument then the weekdays as the second argument.
         :param weekdays: The initial weekdays to show.
@@ -50,11 +60,82 @@ class WeekdayPicker:
         :param kwargs: The keyword arguments to pass to the callback.
         """
         self.bot: Notifier = bot
+        self.chat_id: int = chat_id
         self.callback: Callable = callback
         self.args = args
         self.kwargs = kwargs
 
         self.weekdays: Weekdays = weekdays or Weekdays()
+
+        self.message: Optional[Message] = None
+
+    def render(self):
+        if self.message:
+            self.message = self.bot.edit_message_text(
+                chat_id=self.message.chat.id,
+                message_id=self.message.message_id,
+                text="Please select the weekdays:",
+                reply_markup=self.generate_markup()
+            )
+        else:
+            self.message = self.bot.send_message(
+                chat_id=self.chat_id,
+                text="Please select the weekdays:",
+                reply_markup=self.generate_markup()
+            )
+
+    def generate_markup(self) -> InlineKeyboardMarkup:
+        markup = InlineKeyboardMarkup()
+
+        markup.add(
+            InlineKeyboardButton(
+                f"Mon. {'✅' if self.weekdays.is_enabled(Weekdays.MONDAY) else '❌'}",
+                callback_data=Weekdays.MONDAY
+            ),
+            InlineKeyboardButton(
+                f"Tue. {' ✅' if self.weekdays.is_enabled(Weekdays.TUESDAY) else '❌'}",
+                callback_data=Weekdays.TUESDAY
+            ),
+            InlineKeyboardButton(
+                f"Wed. {'✅' if self.weekdays.is_enabled(Weekdays.WEDNESDAY) else '❌'}",
+                callback_data=Weekdays.WEDNESDAY
+            ),
+            InlineKeyboardButton(
+                f"Thu. {'✅' if self.weekdays.is_enabled(Weekdays.THURSDAY) else '❌'}",
+                callback_data=Weekdays.THURSDAY
+            ),
+            InlineKeyboardButton(
+                f"Fri. {'✅' if self.weekdays.is_enabled(Weekdays.FRIDAY) else '❌'}",
+                callback_data=Weekdays.FRIDAY
+            ),
+            InlineKeyboardButton(
+                f"Sat. {'✅' if self.weekdays.is_enabled(Weekdays.SATURDAY) else '❌'}",
+                callback_data=Weekdays.SATURDAY
+            ),
+            InlineKeyboardButton(
+                f"Sun. {'✅' if self.weekdays.is_enabled(Weekdays.SUNDAY) else '❌'}",
+                callback_data=Weekdays.SUNDAY
+            )
+        )
+
+        markup.add(
+            InlineKeyboardButton("Submit", callback_data="submit")
+        )
+
+        return markup
+
+    def callback_query_handler(self, call: CallbackQuery):
+        try:
+            self.bot.answer_callback_query(call.id, "✅ 成功選取")
+            self.weekdays.toggle(int(call.data))
+            self.render()
+        except ValueError:
+            pass
+
+        if call.data == "submit":
+            self.bot.answer_callback_query(call.id, "✅ 成功送出！")
+            self.bot.edit_message_text(str(self.weekdays), self.chat_id, self.message.id)
+            self.callback(self.chat_id, self.weekdays, *self.args, **self.kwargs)
 
     def start(self, chat_id: int):
         """
@@ -63,10 +144,10 @@ class WeekdayPicker:
         :param chat_id: The chat ID to send the UI to.
         :return: None
         """
-        # TODO: Registers the handler to the bot then start the UI.
-        self.callback(chat_id, Weekdays(1), *self.args, **self.kwargs)  # Temporary
-        self.stop()
+        self.render()
 
-    def stop(self):
-        # TODO: Unregister the handler.
-        pass
+        # TODO: Registers the handler to the bot then start the UI.
+        self.bot.register_callback_query_handler(
+            self.callback_query_handler,
+            lambda call: self.chat_id == self.message.chat.id and self.message.id == call.message.id
+        )
