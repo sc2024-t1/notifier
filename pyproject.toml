@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "notifier"
+version = "0.1.0"
+description = ""
+authors = ["Nat1anWasTaken <nathan@nat1an.xyz>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pytelegrambotapi = "^4.21.0"
+python-dotenv = "^1.0.1"
+pymongo = "^4.8.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
