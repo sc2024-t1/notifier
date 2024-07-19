@@ -9,11 +9,11 @@ class User(MongoObject):
     def __init__(self,
                  database: Database,
                  user_id: int,
-                 selected_character):
+                 selected_character_id: str):
         super().__init__(database)
 
         self.user_id: int = user_id
-        self.selected_character: str = database
+        self.selected_character_id: str = selected_character_id
 
     def unique_identifier(self) -> Dict:
         return {
@@ -23,5 +23,5 @@ class User(MongoObject):
     def to_dict(self) -> Dict:
         return {
             "user_id": self.user_id,
-            "selected_character"
+            "selected_character_id": self.selected_character_id
         }
