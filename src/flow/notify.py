@@ -4,12 +4,26 @@ from telebot.types import Message
 from src.bot import Notifier
 from src.database.habit import Habit
 from src.database.user import User
+from src.utils import ensure_user_settings
 
 
 class NotifyFlow:
     def __init__(self, bot: Notifier, database: Database):
         self.bot: Notifier = bot
         self.database: Database = database
+
+    def chat(self, message: Message):
+        """
+        Chat with the character the user selected.
+        :param message: The message instance.
+        :return: None
+        """
+        # TODO: This is a temporary method. It will actually be global handling instead of a single command.
+        if not (user_settings := ensure_user_settings(self.bot, self.database, message)):
+            self.bot.reply_to(message, "You haven't set up your settings yet. Please use the /start command.")
+            return
+
+        self.bot.reply_to(message, )
 
     def notify(self, user_id: int):
         """

@@ -1,3 +1,5 @@
+from typing import Iterable
+
 from pymongo.database import Database
 from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
@@ -28,16 +30,19 @@ class SettingsFlow:
     def start(self, message: Message):
         # TODO: /start 指令
         # TODO: 回覆用戶一個歡迎訊息，其中包含這個機器人的基本使用方法，且讓用戶選擇他的初始角色，選擇角色的邏輯應該在下方的 character 方法中
+        # TODO: (assigned to Jack)
         self.bot.reply_to(message, "Hello!")  # TODO: EDIT THIS
 
     def help(self, message: Message):
         # TODO: /help 指令
-        # TODO: 回覆用戶一個幫助訊息，其中包含這個機器人的指令列表
+        # TODO: 回覆用戶一個幫助訊息，其中包含這個機器人的指令列表 ()
+        # TODO: (assigned to Eva)
         self.bot.reply_to(message, "Hello!")
 
     def character(self, message: Message):
         # TODO: /character 指令，用來設定用戶的角色
-        characters = Character.find(self.database)  # 可選的角色列表
+        # TODO: (assigned to Yoru)
+        characters: Iterable[Character] = Character.find(self.database)  # 可選的角色列表
 
         # TODO: 回覆用戶訊息並讓用戶選擇角色，TIP: 使用 InlineKeyboardMarkup
 
