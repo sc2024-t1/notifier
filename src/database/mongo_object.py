@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from logging import getLogger, Logger
-from typing import Generic, TypeVar, Type, Optional, AsyncIterator, Dict
+from typing import Generic, TypeVar, Type, Optional, Dict, Iterator
 
 from pymongo.database import Database
 from pymongo.results import UpdateResult, DeleteResult
@@ -83,7 +83,7 @@ class MongoObject(ABC, Generic[T]):
         return cls(database=database, **document)
 
     @classmethod
-    def find(cls: Type[T], database: Database, **kwargs) -> AsyncIterator[T]:
+    def find(cls: Type[T], database: Database, **kwargs) -> Iterator[T]:
         """
         Find all documents in the collection that match the specified query.
         """
