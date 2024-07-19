@@ -2,7 +2,7 @@ from typing import Dict
 
 from pymongo.database import Database
 
-from src.models.mongo_object import MongoObject
+from src.database.mongo_object import MongoObject
 
 
 class Character(MongoObject):

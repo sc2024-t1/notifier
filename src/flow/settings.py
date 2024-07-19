@@ -2,8 +2,8 @@ from pymongo.database import Database
 from telebot import TeleBot
 from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
-from src.models.character import Character
-from src.models.user import User
+from src.database.character import Character
+from src.database.user import User
 
 
 def generate_markup() -> InlineKeyboardMarkup:

@@ -2,7 +2,7 @@ from pymongo.database import Database
 from telebot import TeleBot
 from telebot.types import Message
 
-from src.models.habit import Habit
+from src.database.habit import Habit
 from src.ui.weekday_picker import Weekdays, WeekdayPicker
 from src.utils import ensure_user_settings
 
