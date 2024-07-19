@@ -27,7 +27,7 @@ class SettingsFlow:
 
     def start(self, message: Message):
         # TODO: /start 指令
-        # TODO: 回覆用戶一個歡迎訊息，其中包含這個機器人的基本使用方法
+        # TODO: 回覆用戶一個歡迎訊息，其中包含這個機器人的基本使用方法，且讓用戶選擇他的初始角色，選擇角色的邏輯應該在下方的 character 方法中
         self.bot.reply_to(message, "Hello!")  # TODO: EDIT THIS
 
     def help(self, message: Message):
