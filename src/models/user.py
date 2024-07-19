@@ -6,6 +6,8 @@ from src.models.mongo_object import MongoObject
 
 
 class User(MongoObject):
+    collection_name = "users"
+
     def __init__(
             self,
             database: Database,
