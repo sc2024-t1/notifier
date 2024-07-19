@@ -32,4 +32,5 @@ def create_heat_map(performances: list[Performance]):
     Create a heat map of the user's history performances
     :return:
     """
-    # TODO: 透過傳入的 performances 產出熱力圖
+    # TODO: 透過傳入的 performances 產出熱力圖  (assigned to Yoru)
+    pass

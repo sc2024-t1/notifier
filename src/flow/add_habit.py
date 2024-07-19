@@ -25,15 +25,15 @@ class AddHabitFlow:
         habit_name = message.text
 
         self.bot.reply_to(
-            message, f"Got it! You want to add the habit '{habit_name}'. What is the description of this habit?",
+            message, f"Got it! You want to add the habit '{habit_name}'.",
         )  # TODO: 編輯這個訊息
 
-        picker = WeekdayPicker(self.bot, self.habit_weekdays, habit_name=habit_name)
+        picker = WeekdayPicker(self.bot, message.chat.id, self.habit_weekdays, habit_name=habit_name)
         picker.start(message.chat.id)
 
     def habit_weekdays(self, chat_id: int, weekdays: Weekdays, habit_name: str):
         message = self.bot.send_message(
-            chat_id, "What time(s) would you like to do this habit? (e.g. 08:00, 12:00, 18:00)"
+            chat_id, f"Got it! You selected {weekdays}. Now, what time(s) would you like to do this habit? (e.g. 08:00, 12:00, 18:00)"
         )  # TODO: 編輯這個訊息
 
         self.bot.register_next_step_handler(message, self.habit_times, habit_name=habit_name, weekdays=weekdays)
