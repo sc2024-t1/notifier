@@ -12,12 +12,16 @@ class Character(MongoObject):
             self,
             database: Database,
             character_id: str,
-            prompt: str
+            initial_prompt: str,
+            notify_prompt: str,
+            avatar_url: str
     ):
         super().__init__(database)
 
         self.character_id: str = character_id
-        self.prompt: str = prompt
+        self.initial_prompt: str = initial_prompt
+        self.notify_prompt: str = notify_prompt
+        self.avatar_url: str = avatar_url
 
     def unique_identifier(self) -> Dict:
         return {
@@ -27,5 +31,7 @@ class Character(MongoObject):
     def to_dict(self):
         return {
             "character_id": self.character_id,
-            "prompt": self.prompt
+            "initial_prompt": self.initial_prompt,
+            "notify_prompt": self.notify_prompt,
+            "avatar_url": self.avatar_url
         }

@@ -1,4 +1,3 @@
-from google.ai.generativelanguage_v1 import GenerateContentResponse
 from google.generativeai import ChatSession, GenerativeModel
 from pymongo.database import Database
 
@@ -19,7 +18,12 @@ class Conversation:
         self.chat: ChatSession = self.setup_chat()
 
     def ask(self, text: str) -> str:
-        response: GenerateContentResponse = self.chat.send_message(text)
+        self.chat.send_message(text)
+
+        return self.chat.last.text
+
+    def notify(self, habit_title: str) -> str:
+        self.chat.send_message()  # TODO: use the notify prompt here
 
         return self.chat.last.text
 
@@ -63,7 +67,7 @@ class Conversation:
             history=[
                 {
                     "role": "user",
-                    "parts": self.character.prompt
+                    "parts": self.character.initial_prompt
                 },
                 {
                     "role": "model",
@@ -87,8 +91,7 @@ class ConversationManager:
 
         del self.conversations[user_id]
 
-    def get_conversation(self, user_id: int) \
-            -> Conversation:
+    def get_conversation(self, user_id: int) -> Conversation:
         if user_id in self.conversations:
             return self.conversations[user_id]
 
