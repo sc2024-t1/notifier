@@ -23,7 +23,9 @@ class NotifyFlow:
             self.bot.reply_to(message, "You haven't set up your settings yet. Please use the /start command.")
             return
 
-        self.bot.reply_to(message, )
+        conversation = self.bot.conversation_manager.get_conversation(user_settings.user_id)
+
+        self.bot.reply_to(message, conversation.chat(message.text.lstrip("/chat ")))
 
     def notify(self, user_id: int):
         """
