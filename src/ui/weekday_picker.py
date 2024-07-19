@@ -1,3 +1,5 @@
+from typing import Callable, Optional
+
 from telebot import TeleBot
 
 
@@ -37,11 +39,34 @@ class Weekdays:
 
 
 class WeekdayPicker:
-    def __init__(self, bot: TeleBot):
+    def __init__(self, bot: TeleBot, callback: Callable, weekdays: Optional[Weekdays] = None, *args, **kwargs):
+        """
+        A UI for picking weekdays.
+        :param bot: The bot instance.
+        :param callback: The callback to call when the user finishes picking the weekdays.
+        The callback should accept the chat_id as first argument then the weekdays as the second argument.
+        :param weekdays: The initial weekdays to show.
+        :param args: The positional arguments to pass to the callback.
+        :param kwargs: The keyword arguments to pass to the callback.
+        """
         self.bot: TeleBot = bot
+        self.callback: Callable = callback
+        self.args = args
+        self.kwargs = kwargs
+
+        self.weekdays: Weekdays = weekdays or Weekdays()
 
     def start(self, chat_id: int):
-        pass
+        """
+        Starts the UI. Note that this function won't block. It will return immediately after the UI is started.
+        The callback will be called when the user finishes picking the weekdays.
+        :param chat_id: The chat ID to send the UI to.
+        :return: None
+        """
+        # TODO: Registers the handler to the bot then start the UI.
+        self.callback(chat_id, Weekdays(1), *self.args, **self.kwargs)  # Temporary
+        self.stop()
 
     def stop(self):
+        # TODO: Unregister the handler.
         pass

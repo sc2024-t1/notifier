@@ -6,10 +6,12 @@ from src.models.mongo_object import MongoObject
 
 
 class User(MongoObject):
-    def __init__(self,
-                 database: Database,
-                 user_id: int,
-                 selected_character_id: str):
+    def __init__(
+            self,
+            database: Database,
+            user_id: int,
+            selected_character_id: str
+    ):
         super().__init__(database)
 
         self.user_id: int = user_id
