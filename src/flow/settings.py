@@ -30,7 +30,7 @@ class SettingsFlow:
     def start(self, message: Message):
         # TODO: /start 指令
         # TODO: 回覆用戶一個歡迎訊息，其中包含這個機器人的基本使用方法，且讓用戶選擇他的初始角色，選擇角色的邏輯應該在下方的 character 方法中
-        # TODO: (assigned to Jack)
+        # TODO: (assigned to Yoru)
         self.bot.reply_to(message, "Hello!")  # TODO: EDIT THIS
 
     def help(self, message: Message):
@@ -41,10 +41,8 @@ class SettingsFlow:
 
     def character(self, message: Message):
         # TODO: /character 指令，用來設定用戶的角色
-        # TODO: (assigned to Yoru)
+        # TODO: (assigned to Jack)
         characters: Iterable[Character] = Character.find(self.database)  # 可選的角色列表
-
-        # TODO: 回覆用戶訊息並讓用戶選擇角色，TIP: 使用 InlineKeyboardMarkup
 
     def select_character(self, call: CallbackQuery):
         character_id = ""  # TODO: 從 callback_data 中取得角色 ID
@@ -54,7 +52,7 @@ class SettingsFlow:
         user_settings.selected_character_id = character_id
         user_settings.upsert()
 
-        self.bot.send_message(call.message.chat.id, f"你選擇了: {character.prompt}")  # TODO: 改進這個訊息
+        self.bot.send_message(call.message.chat.id, f"你選擇了: {character.initial_prompt}")  # TODO: 改進這個訊息
 
 
 def setup(bot: Notifier, database: Database):
