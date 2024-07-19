@@ -81,13 +81,13 @@ class ConversationManager:
 
         self.conversations: dict[int, Conversation] = {}
 
-    async def close_conversation(self, user_id: int):
+    def close_conversation(self, user_id: int):
         if user_id not in self.conversations:
             return
 
         del self.conversations[user_id]
 
-    async def get_conversation(self, user_id: int) \
+    def get_conversation(self, user_id: int) \
             -> Conversation:
         if user_id in self.conversations:
             return self.conversations[user_id]
