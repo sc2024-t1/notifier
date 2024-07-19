@@ -1,6 +1,7 @@
 from os import getenv, listdir
 
 from dotenv import load_dotenv
+from google import generativeai
 from pymongo import MongoClient
 from pymongo.database import Database
 from telebot import TeleBot
@@ -8,6 +9,8 @@ from telebot import TeleBot
 
 def main():
     load_dotenv()
+
+    generativeai.configure(api_key=getenv("GEMINI_API_KEY"))
 
     bot = TeleBot(getenv("BOT_TOKEN"))
     database = MongoClient(getenv("MONGO_URI")).get_database("notifier")
