@@ -25,7 +25,7 @@ class NotifyFlow:
 
         conversation = self.bot.conversation_manager.get_conversation(user_settings.user_id)
 
-        self.bot.reply_to(message, conversation.chat(message.text.lstrip("/chat ")))
+        self.bot.reply_to(message, conversation.ask(message.text.lstrip("/chat ")))
 
     def notify(self, user_id: int):
         """
@@ -47,5 +47,5 @@ class NotifyFlow:
 def setup(bot: Notifier, database: Database):
     flow = NotifyFlow(bot, database)
 
-    bot.register_message_handler(flow.on_message, content_types=["text"])
+    bot.register_message_handler(flow.chat, commands=["chat"])
     # TODO: Register the handlers
