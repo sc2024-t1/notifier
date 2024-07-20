@@ -35,9 +35,9 @@ class SettingsFlow:
         markup = InlineKeyboardMarkup()
         markup.row_width = 1
         markup.add(InlineKeyboardButton("點我以開始選擇角色", callback_data= "start_character"))
-        self.bot.send_message(message.chat.id, f"{message.user.username}好！！！歡迎使用本習慣養成軟體！你可以設定你的目標和時間，機器人會在適當的時候提醒你。\
+        self.bot.send_message(message.chat.id, f"{message.from_user.full_name} 好！歡迎使用本習慣養成軟體！你可以設定你的目標和時間，機器人會在適當的時候提醒你。\
                               完成後，你可以與角色互動，系統會根據對話判斷你的完成狀態。本軟體也會定期統計你的習慣完成狀況，以熱力圖展示，還有各種成就等你解鎖喔～")
-        #TODO : call the function "character" by hitting the button
+        # TODO: call the function "character" by hitting the button
         return markup
     
     def help(self, message: Message):
