@@ -12,6 +12,7 @@ class Character(MongoObject):
             self,
             database: Database,
             character_id: str,
+            name: str,
             initial_prompt: str,
             notify_prompt: str,
             avatar_url: str
@@ -19,6 +20,7 @@ class Character(MongoObject):
         super().__init__(database)
 
         self.character_id: str = character_id
+        self.name: str = name
         self.initial_prompt: str = initial_prompt
         self.notify_prompt: str = notify_prompt
         self.avatar_url: str = avatar_url
@@ -31,6 +33,7 @@ class Character(MongoObject):
     def to_dict(self):
         return {
             "character_id": self.character_id,
+            "name": self.name,
             "initial_prompt": self.initial_prompt,
             "notify_prompt": self.notify_prompt,
             "avatar_url": self.avatar_url
