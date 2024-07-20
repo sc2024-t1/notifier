@@ -1,8 +1,11 @@
+import uuid
+
 from pymongo.database import Database
 from telebot.types import Message
 
 from src.bot import Notifier
 from src.database.habit import Habit
+from src.database.user import User
 from src.ui.weekday_picker import Weekdays, WeekdayPicker
 from src.utils import ensure_user_settings
 
@@ -14,56 +17,70 @@ class AddHabitFlow:
         self.database: Database = database
 
     def add_habit(self, message: Message):
-        if not ensure_user_settings(self.bot, self.database, message):
+        if not (user_settings := ensure_user_settings(self.bot, self.database, message)):
             return
 
-        self.bot.reply_to(message, "What habit would you like to add?")  # TODO: 編輯這個訊息
+        self.bot.reply_to(message, user_settings.selected_character.ask_habit_name)  # TODO: 編輯這個訊息
 
-        self.bot.register_next_step_handler(message, self.habit_name)
+        self.bot.register_next_step_handler(message, self.habit_name, user_settings=user_settings)
 
-    def habit_name(self, message: Message):
+    def habit_name(self, message: Message, user_settings: User):
         habit_name = message.text
 
         self.bot.reply_to(
-            message, f"Got it! You want to add the habit '{habit_name}'.",
-        )  # TODO: 編輯這個訊息
+            message, user_settings.selected_character.ask_habit_name_ack
+            .replace("%habit_name%", habit_name)
+        )  # TODO: 編輯這個訊息xwx
 
-        picker = WeekdayPicker(self.bot, message.chat.id, self.habit_weekdays, habit_name=habit_name)
+        picker = WeekdayPicker(
+            self.bot, message.chat.id, self.habit_weekdays, habit_name=habit_name, user_settings=user_settings
+        )
         picker.start()
 
-    def habit_weekdays(self, chat_id: int, weekdays: Weekdays, habit_name: str):
+    def habit_weekdays(self, chat_id: int, weekdays: Weekdays, habit_name: str, user_settings: User):
         message = self.bot.send_message(
-            chat_id, f"Got it! You selected {weekdays}. Now, what time(s) would you like to do this habit? (e.g. 08:00, 12:00, 18:00)"
+            chat_id,
+            user_settings.selected_character.ask_habit_time
+            .replace("%weekdays%", str(weekdays))
         )  # TODO: 編輯這個訊息
 
-        self.bot.register_next_step_handler(message, self.habit_times, habit_name=habit_name, weekdays=weekdays)
+        self.bot.register_next_step_handler(
+            message, self.habit_times, habit_name=habit_name, weekdays=weekdays, user_settings=user_settings
+        )
 
-    def habit_times(self, message: Message, habit_name: str, weekdays: Weekdays):
+    def habit_times(self, message: Message, habit_name: str, weekdays: Weekdays, user_settings: User):
         times = message.text.split(", ")
 
         if any(time not in ["{:02d}:00".format(i) for i in range(24)] for time in times):
-            self.bot.reply_to(message, "Invalid time format. Please use the format HH:00.")  # TODO: 編輯這個訊息
+            self.bot.reply_to(message, user_settings.selected_character.wrong_time_format)  # TODO: 編輯這個訊息
             return
 
         self.bot.reply_to(
-            message, f"Got it! You want to add the habit '{habit_name}' on {weekdays} at {', '.join(times)}."
+            message,
+            user_settings.selected_character.add_habit_done
+            .replace("%weekdays%", str(weekdays))
+            .replace("%times%", ', '.join(times))
+            .replace("%habit_name%", habit_name)
         )  # TODO: 編輯這個訊息
 
-        self.habit_upsert(message, habit_name=habit_name, weekdays=weekdays, times=times)
+        self.habit_upsert(message, habit_name=habit_name, weekdays=weekdays, times=times, user_settings=user_settings)
 
-    def habit_upsert(self, message: Message, habit_name: str, weekdays: Weekdays, times: list[str]):
+    def habit_upsert(self, message: Message, habit_name: str, weekdays: Weekdays, times: list[str],
+                     user_settings: User):
         habit = Habit(
             database=self.database,
             owner_id=message.from_user.id,
             title=habit_name,
-            habit_id="",
+            habit_id=str(uuid.uuid4()),
             weekdays=weekdays.flags,
             times=times
         )
 
         habit.upsert()
-
-        self.bot.send_message(message.chat.id, "Habit added successfully!")  # TODO: 編輯這個訊息
+        self.bot.send_message(
+            message.chat.id,
+            user_settings.selected_character.add_habit_upsert_success
+        )  # TODO: 編輯這個訊息
 
 
 def setup(bot: Notifier, database: Database):

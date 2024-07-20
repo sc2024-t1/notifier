@@ -16,7 +16,14 @@ class Character(MongoObject):
             description: str,
             initial_prompt: str,
             notify_prompt: str,
-            avatar_url: str
+            avatar_url: str,
+
+            ask_habit_name: str,
+            ask_habit_name_ack: str,
+            ask_habit_time: str,
+            wrong_time_format: str,
+            add_habit_done: str,
+            add_habit_upsert_success: str
     ):
         super().__init__(database)
         self.character_id: str = character_id
@@ -25,6 +32,13 @@ class Character(MongoObject):
         self.initial_prompt: str = initial_prompt
         self.notify_prompt: str = notify_prompt
         self.avatar_url: str = avatar_url
+
+        self.ask_habit_name: str = ask_habit_name
+        self.ask_habit_name_ack: str = ask_habit_name_ack
+        self.ask_habit_time: str = ask_habit_time
+        self.wrong_time_format: str = wrong_time_format
+        self.add_habit_done: str = add_habit_done
+        self.add_habit_upsert_success: str = add_habit_upsert_success
 
     def unique_identifier(self) -> Dict:
         return {
