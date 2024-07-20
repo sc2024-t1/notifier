@@ -69,6 +69,8 @@ class WeekdayPicker:
 
         self.message: Optional[Message] = None
 
+        self.ended: bool = False
+
     def render(self):
         if self.message:
             self.message = self.bot.edit_message_text(
@@ -137,6 +139,7 @@ class WeekdayPicker:
         if call.data == "submit":
             self.bot.answer_callback_query(call.id, "✅ 成功送出！")
             self.bot.edit_message_text(str(self.weekdays), self.chat_id, self.message.id)
+            self.ended = True
             self.callback(self.chat_id, self.weekdays, *self.args, **self.kwargs)
 
     def start(self):
@@ -152,5 +155,5 @@ class WeekdayPicker:
         # Should be fine if the bot won't run too long.
         self.bot.register_callback_query_handler(
             self.callback_query_handler,
-            lambda call: self.chat_id == self.message.chat.id and self.message.id == call.message.id
+            lambda call: self.chat_id == self.message.chat.id and self.message.id == call.message.id and not self.ended
         )
