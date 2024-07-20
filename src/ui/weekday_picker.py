@@ -47,8 +47,14 @@ class Weekdays:
 
 
 class WeekdayPicker:
-    def __init__(self, bot: Notifier, chat_id: int, callback: Callable, weekdays: Optional[Weekdays] = None, *args,
-                 **kwargs):
+    def __init__(
+            self,
+            bot: Notifier,
+            chat_id: int,
+            callback: Callable,
+            weekdays: Optional[Weekdays] = None,
+            *args, **kwargs
+    ):
         """
         A UI for picking weekdays.
         :param bot: The bot instance.
@@ -73,7 +79,7 @@ class WeekdayPicker:
 
     def render(self):
         if self.message:
-            self.message = self.bot.edit_message_text(
+            self.bot.edit_message_text(
                 chat_id=self.message.chat.id,
                 message_id=self.message.message_id,
                 text="Please select the weekdays:",
@@ -138,7 +144,7 @@ class WeekdayPicker:
 
         if call.data == "submit":
             self.bot.answer_callback_query(call.id, "✅ 成功送出！")
-            self.bot.edit_message_text(str(self.weekdays), self.chat_id, self.message.id)
+            self.bot.delete_message(self.chat_id, self.message.id)
             self.ended = True
             self.callback(self.chat_id, self.weekdays, *self.args, **self.kwargs)
 
