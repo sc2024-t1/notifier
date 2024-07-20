@@ -22,8 +22,8 @@ def ensure_user_settings(bot: Notifier, database: Database, message: Message) ->
         return user_settings
     else:
         bot.send_message(
-            message.chat.id, "You haven't set up your settings yet. Please use the /start command."
-        )  # TODO: 編輯這個訊息
+            message.chat.id, "我在資料庫中找不到有關你的紀錄，你能夠試試看 /start 指令嗎？"
+        )
         return None
 
 
