@@ -60,10 +60,14 @@ class SettingsFlow:
         picker.start()
 
     def select_character(self, chat_id: int, character: Character, user_id: int):
+        self.bot.send_message(chat_id, text=f"✅ 成功將你的角色設定為 {character.name}！")
+
         character = Character.find_one(self.database, character_id=character.character_id)
-        user_settings = User.find_one(self.database, user_id=user_id)
-        user_settings.selected_character_id = character.character_id
+
+        user_settings = User(database=self.database, user_id=user_id, selected_character_id=character.character_id)
         user_settings.upsert()
+
+        self.bot.conversation_manager.close_conversation(user_id)  # Close the conversation to apply new character.
 
         conversation = self.bot.conversation_manager.get_conversation(user_id)
 
