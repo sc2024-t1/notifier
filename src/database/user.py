@@ -2,6 +2,7 @@ from typing import Dict
 
 from pymongo.database import Database
 
+from src.database.character import Character
 from src.database.mongo_object import MongoObject
 
 
@@ -29,3 +30,7 @@ class User(MongoObject):
             "user_id": self.user_id,
             "selected_character_id": self.selected_character_id
         }
+
+    @property
+    def selected_character(self):
+        return Character.find_one(self.database, character_id=self.selected_character_id)
