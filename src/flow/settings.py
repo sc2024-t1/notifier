@@ -1,11 +1,12 @@
 from typing import Iterable
 
 from pymongo.database import Database
-from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
 from src.bot import Notifier
 from src.database.character import Character
 from src.database.user import User
+from src.ui.character_picker import CharacterPicker
 
 
 def generate_markup() -> InlineKeyboardMarkup:
@@ -48,15 +49,25 @@ class SettingsFlow:
     def character(self, message: Message):
         characters: Iterable[Character] = Character.find(self.database)  # 可選的角色列表
 
-    def select_character(self, call: CallbackQuery):
-        character_id = ""  # TODO: implement this
+        picker = CharacterPicker(
+            bot=self.bot,
+            chat_id=message.chat.id,
+            callback=self.select_character,
+            characters=list(characters),
+            user_id=message.from_user.id
+        )
 
-        character = Character.find_one(self.database, character_id=character_id)
-        user_settings = User.find_one(self.database, user_id=call.from_user.id)
-        user_settings.selected_character_id = character_id
+        picker.start()
+
+    def select_character(self, chat_id: int, character: Character, user_id: int):
+        character = Character.find_one(self.database, character_id=character.character_id)
+        user_settings = User.find_one(self.database, user_id=user_id)
+        user_settings.selected_character_id = character.character_id
         user_settings.upsert()
 
-        self.bot.send_message(call.message.chat.id, f"你選擇了: {character.initial_prompt}")  # TODO: 改進這個訊息
+        conversation = self.bot.conversation_manager.get_conversation(user_id)
+
+        self.bot.send_message(chat_id, text=conversation.ask("你好"))
 
 
 def setup(bot: Notifier, database: Database):
