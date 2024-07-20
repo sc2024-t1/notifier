@@ -95,7 +95,7 @@ class SettingsFlow:
         self.bot.send_message(chat_id, text=conversation.ask("你好"))
 
     def reset(self, message: Message):
-        if not (user_settings := ensure_user_settings(self.bot, self.database, message)):
+        if not ensure_user_settings(self.bot, self.database, message):
             return
 
         self.bot.conversation_manager.close_conversation(message.from_user.id)
