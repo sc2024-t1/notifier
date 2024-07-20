@@ -25,7 +25,7 @@ def register_flows(bot: TeleBot, database: Database):
         if not file.endswith('.py'):
             continue
 
-        module = __import__(f"flow.{file[:-3]}", fromlist=["setup"])
+        module = __import__(f"src.flow.{file[:-3]}", fromlist=["setup"])
         module.setup(bot, database)
 
 
