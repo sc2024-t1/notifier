@@ -50,6 +50,6 @@ class NotifyFlow:
 def setup(bot: Notifier, database: Database):
     flow = NotifyFlow(bot, database)
 
-    bot.register_message_handler(flow.chat, func=lambda message: message.text not in ['/start', '/character', '/notify', '/help', '/reset'])
+    bot.register_message_handler(flow.chat, func=lambda message: message.text not in ['/add_habit', '/start', '/character', '/notify', '/help', '/reset'])
     bot.register_message_handler(flow.notify, commands=["notify"])
     # TODO: Register the handlers
