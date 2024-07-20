@@ -137,11 +137,10 @@ class WeekdayPicker:
             self.bot.edit_message_text(str(self.weekdays), self.chat_id, self.message.id)
             self.callback(self.chat_id, self.weekdays, *self.args, **self.kwargs)
 
-    def start(self, chat_id: int):
+    def start(self):
         """
         Starts the UI. Note that this function won't block. It will return immediately after the UI is started.
         The callback will be called when the user finishes picking the weekdays.
-        :param chat_id: The chat ID to send the UI to.
         :return: None
         """
         self.render()
