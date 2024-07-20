@@ -29,7 +29,7 @@ class AddHabitFlow:
         )  # TODO: 編輯這個訊息
 
         picker = WeekdayPicker(self.bot, message.chat.id, self.habit_weekdays, habit_name=habit_name)
-        picker.start(message.chat.id)
+        picker.start()
 
     def habit_weekdays(self, chat_id: int, weekdays: Weekdays, habit_name: str):
         message = self.bot.send_message(
