@@ -23,7 +23,7 @@ class Conversation:
         return self.chat.last.text
 
     def notify(self, habit_title: str) -> str:
-        self.chat.send_message()  # TODO: use the notify prompt here
+        self.chat.send_message(self.character.notify_prompt.replace("%title%", habit_title))  # TODO: use the notify prompt here
 
         return self.chat.last.text
 
