@@ -18,9 +18,7 @@ class NotifyFlow:
         :param message: The message instance.
         :return: None
         """
-        # TODO: This is a temporary method. It will actually be global handling instead of a single command.
         if not (user_settings := ensure_user_settings(self.bot, self.database, message)):
-            self.bot.reply_to(message, "You haven't set up your settings yet. Please use the /start command.")
             return
 
         conversation = self.bot.conversation_manager.get_conversation(user_settings.user_id)
@@ -31,7 +29,7 @@ class NotifyFlow:
         """
         Notifies the user for their upcoming habits. Ignores the time settings
         and sends the message immediately.
-        :param user_id: The user ID.
+        :param message: The message instance.
         """
         user_settings = User.find_one(self.database, user_id=message.from_user.id)
 
@@ -52,6 +50,6 @@ class NotifyFlow:
 def setup(bot: Notifier, database: Database):
     flow = NotifyFlow(bot, database)
 
-    bot.register_message_handler(flow.chat, commands=["chat"])
+    bot.register_message_handler(flow.chat, func=lambda message: message.text not in ['/start', '/character', '/notify', '/help', '/reset'])
     bot.register_message_handler(flow.notify, commands=["notify"])
     # TODO: Register the handlers
