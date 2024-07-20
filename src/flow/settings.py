@@ -71,6 +71,7 @@ class SettingsFlow:
 
         conversation = self.bot.conversation_manager.get_conversation(user_id)
 
+        self.bot.send_chat_action(chat_id, action="typing")
         self.bot.send_message(chat_id, text=conversation.ask("你好"))
 
 
