@@ -27,25 +27,31 @@ class NotifyFlow:
 
         self.bot.reply_to(message, conversation.ask(message.text.lstrip("/chat ")))
 
-    def notify(self, user_id: int):
+    def notify(self, message: Message):
         """
         Notifies the user for their upcoming habits. Ignores the time settings
         and sends the message immediately.
         :param user_id: The user ID.
         """
-        user_settings = User.find_one(self.database, user_id=user_id)
+        user_settings = User.find_one(self.database, user_id=message.from_user.id)
 
         if not user_settings:
             raise ValueError("User settings not found.")
 
-        habits = Habit.find(self.database, owner_id=user_id)
+        habits = Habit.find(self.database, owner_id=message.from_user.id)
 
         for habit in habits:
-            pass
+            # TODO: Notify for each habit that has reached it's time
+            conversation = self.bot.conversation_manager.get_conversation(message.from_user.id)
+
+            response = conversation.notify(habit_title=habit.title)
+
+            self.bot.send_message(message.chat.id, response)
 
 
 def setup(bot: Notifier, database: Database):
     flow = NotifyFlow(bot, database)
 
     bot.register_message_handler(flow.chat, commands=["chat"])
+    bot.register_message_handler(flow.notify, commands=["notify"])
     # TODO: Register the handlers
