@@ -146,7 +146,9 @@ class WeekdayPicker:
         """
         self.render()
 
-        # TODO: Registers the handler to the bot then start the UI.
+        # This will cause some problem since the handlers are never removed.
+        # Anyway this library doesn't seem providing a method for removing handlers.
+        # Should be fine if the bot won't run too long.
         self.bot.register_callback_query_handler(
             self.callback_query_handler,
             lambda call: self.chat_id == self.message.chat.id and self.message.id == call.message.id
