@@ -62,10 +62,16 @@ class SettingsFlow:
         picker.start()
 
     def help(self, message: Message):
-        # TODO: /help 指令
-        # TODO: 回覆用戶一個幫助訊息，其中包含這個機器人的指令列表 ()
-        # TODO: (assigned to Eva)
-        self.bot.reply_to(message, "Hello!")
+        self.bot.reply_to(
+            message,
+            "哈囉！以下是功能列表和使用方式"
+            "\n使用 /start 開始你的習慣養成機器人"
+            "\n輸入 /help 讓我為你介紹所有功能列表和如何使用這些功能"
+            "\n利用 /character 讓我為你顯示所有角色列表並選擇你想要的角色"
+            "\n輸入 /add_habit 可以新增想養成的習慣（一次養成一種哦！我們慢慢來），並設定執行時間和執行次數，以及何時結算你的小任務"
+            "\n輸入 /stats 獲得近期努力成果和熱力圖"
+            "\n輸入 /reset 重置對話"
+        )
 
     def character(self, message: Message):
         characters: Iterable[Character] = Character.find(self.database)  # 可選的角色列表
