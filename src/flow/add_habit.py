@@ -85,7 +85,7 @@ class AddHabitFlow:
         self.bot.send_message(
             message.chat.id,
             user_settings.selected_character.add_habit_upsert_success
-        )  # TODO: 編輯這個訊息
+        )
 
 
 def setup(bot: Notifier, database: Database):

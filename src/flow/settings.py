@@ -118,9 +118,15 @@ class SettingsFlow:
 
         performances = Performance.find(self.database, user_id=message.from_user.id)
 
+        try:
+            heatmap_path = generate_heatmap(list(performances))
+        except ValueError:
+            self.bot.reply_to(message, "❌ 無法生成熱力圖，你可能還沒有完成任何習慣？")
+            return
+
         self.bot.send_photo(
             chat_id=message.chat.id,
-            photo=open(generate_heatmap(list(performances)), 'rb')
+            photo=open(heatmap_path, 'rb')
         )
 
 

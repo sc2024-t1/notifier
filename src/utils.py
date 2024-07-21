@@ -40,6 +40,9 @@ def generate_heatmap(performances: List[Performance]) -> str:
     :return: The path to the generated heatmap image.
     """
     # Create a DataFrame from the performances
+    if not performances:
+        raise ValueError("The performances list is empty.")
+
     data = {
         'date': [performance.completed_at.date() for performance in performances],
         'succeeded': [performance.succeeded for performance in performances]
