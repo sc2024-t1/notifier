@@ -74,7 +74,7 @@ class Conversation:
                     "parts": "知道了！"
                 }
             ]
-        )  # TODO: Implement the prompting here based on the characters and improve prompt handling.
+        )
 
         return conversation
 
