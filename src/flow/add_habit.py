@@ -20,24 +20,28 @@ class AddHabitFlow:
         if not (user_settings := ensure_user_settings(self.bot, self.database, message)):
             return
 
-        self.bot.reply_to(message, user_settings.selected_character.ask_habit_name)  # TODO: 編輯這個訊息
+        self.bot.reply_to(message, user_settings.selected_character.ask_habit_title)  # TODO: 編輯這個訊息
 
-        self.bot.register_next_step_handler(message, self.habit_name, user_settings=user_settings)
+        self.bot.register_next_step_handler(message, self.habit_title, user_settings=user_settings)
 
-    def habit_name(self, message: Message, user_settings: User):
-        habit_name = message.text
+    def habit_title(self, message: Message, user_settings: User):
+        habit_title = message.text
 
         self.bot.reply_to(
-            message, user_settings.selected_character.ask_habit_name_ack
-            .replace("%habit_name%", habit_name)
-        )  # TODO: 編輯這個訊息xwx
+            message, user_settings.selected_character.ask_habit_title_ack
+            .replace("%habit_title%", habit_title)
+        )  # TODO: 編輯這個訊息
 
         picker = WeekdayPicker(
-            self.bot, message.chat.id, self.habit_weekdays, habit_name=habit_name, user_settings=user_settings
+            self.bot, message.chat.id,
+            self.habit_weekdays,
+            habit_title=habit_title,
+            user_settings=user_settings,
+            text=user_settings.selected_character.ask_weekday
         )
         picker.start()
 
-    def habit_weekdays(self, chat_id: int, weekdays: Weekdays, habit_name: str, user_settings: User):
+    def habit_weekdays(self, chat_id: int, weekdays: Weekdays, habit_title: str, user_settings: User):
         message = self.bot.send_message(
             chat_id,
             user_settings.selected_character.ask_habit_time
@@ -45,10 +49,10 @@ class AddHabitFlow:
         )  # TODO: 編輯這個訊息
 
         self.bot.register_next_step_handler(
-            message, self.habit_times, habit_name=habit_name, weekdays=weekdays, user_settings=user_settings
+            message, self.habit_times, habit_title=habit_title, weekdays=weekdays, user_settings=user_settings
         )
 
-    def habit_times(self, message: Message, habit_name: str, weekdays: Weekdays, user_settings: User):
+    def habit_times(self, message: Message, habit_title: str, weekdays: Weekdays, user_settings: User):
         times = message.text.split(", ")
 
         if any(time not in ["{:02d}:00".format(i) for i in range(24)] for time in times):
@@ -60,17 +64,17 @@ class AddHabitFlow:
             user_settings.selected_character.add_habit_done
             .replace("%weekdays%", str(weekdays))
             .replace("%times%", ', '.join(times))
-            .replace("%habit_name%", habit_name)
+            .replace("%habit_title%", habit_title)
         )  # TODO: 編輯這個訊息
 
-        self.habit_upsert(message, habit_name=habit_name, weekdays=weekdays, times=times, user_settings=user_settings)
+        self.habit_upsert(message, habit_title=habit_title, weekdays=weekdays, times=times, user_settings=user_settings)
 
-    def habit_upsert(self, message: Message, habit_name: str, weekdays: Weekdays, times: list[str],
+    def habit_upsert(self, message: Message, habit_title: str, weekdays: Weekdays, times: list[str],
                      user_settings: User):
         habit = Habit(
             database=self.database,
             owner_id=message.from_user.id,
-            title=habit_name,
+            title=habit_title,
             habit_id=str(uuid.uuid4()),
             weekdays=weekdays.flags,
             times=times

@@ -18,8 +18,8 @@ class Character(MongoObject):
             notify_prompt: str,
             avatar_url: str,
 
-            ask_habit_name: str,
-            ask_habit_name_ack: str,
+            ask_habit_title: str,
+            ask_habit_title_ack: str,
             ask_weekday: str,
             ask_habit_time: str,
             wrong_time_format: str,
@@ -34,8 +34,8 @@ class Character(MongoObject):
         self.notify_prompt: str = notify_prompt
         self.avatar_url: str = avatar_url
 
-        self.ask_habit_name: str = ask_habit_name
-        self.ask_habit_name_ack: str = ask_habit_name_ack  # %habit_name%
+        self.ask_habit_title: str = ask_habit_title
+        self.ask_habit_title_ack: str = ask_habit_title_ack  # %habit_title%
         self.ask_weekday: str = ask_weekday
         self.ask_habit_time: str = ask_habit_time  # %weekdays%
         self.wrong_time_format: str = wrong_time_format
@@ -56,8 +56,8 @@ class Character(MongoObject):
             "notify_prompt": self.notify_prompt,
             "avatar_url": self.avatar_url,
 
-            "ask_habit_name": self.ask_habit_name,
-            "ask_habit_name_ack": self.ask_habit_name_ack,
+            "ask_habit_title": self.ask_habit_title,
+            "ask_habit_title_ack": self.ask_habit_title_ack,
             "ask_weekday": self.ask_weekday,
             "ask_habit_time": self.ask_habit_time,
             "wrong_time_format": self.wrong_time_format,
