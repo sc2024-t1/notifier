@@ -45,7 +45,7 @@ class AddHabitFlow:
             chat_id,
             user_settings.selected_character.ask_habit_time
             .replace("%weekdays%", str(weekdays))
-            .replace("%habit_title%", habit_title)
+            .replace("%habit_title%", habit_title) + "(Ex. 18:00, 19:00，以逗號分隔)"
         )
 
         self.bot.register_next_step_handler(
