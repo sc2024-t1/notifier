@@ -57,7 +57,7 @@ class NotifyFlow:
 
         conversation = self.bot.conversation_manager.get_conversation(user_settings.user_id)
 
-        self.bot.reply_to(message, conversation.ask(message.text.lstrip("/chat ")))
+        self.bot.reply_to(message, conversation.ask(message.text))
 
     def notify(self, message: Message):
         """
