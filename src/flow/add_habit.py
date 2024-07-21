@@ -58,6 +58,9 @@ class AddHabitFlow:
 
         if any(time not in ["{:02d}:00".format(i) for i in range(24)] for time in times):
             self.bot.reply_to(message, user_settings.selected_character.wrong_time_format)  # TODO: 編輯這個訊息
+            self.bot.register_next_step_handler(
+                message, self.habit_times, habit_title=habit_title, weekdays=weekdays, user_settings=user_settings
+            )
             return
 
         self.bot.reply_to(
