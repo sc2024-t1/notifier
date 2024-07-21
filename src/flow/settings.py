@@ -5,9 +5,10 @@ from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, C
 
 from src.bot import Notifier
 from src.database.character import Character
+from src.database.performance import Performance
 from src.database.user import User
 from src.ui.character_picker import CharacterPicker
-from src.utils import ensure_user_settings
+from src.utils import ensure_user_settings, generate_heatmap
 
 
 def generate_markup() -> InlineKeyboardMarkup:
@@ -105,6 +106,17 @@ class SettingsFlow:
             text="成功重置你的對話！"
         )
 
+    def stats(self, message: Message):
+        if not ensure_user_settings(self.bot, self.database, message):
+            return
+
+        performances = Performance.find(self.database, user_id=message.from_user.id)
+
+        self.bot.send_photo(
+            chat_id=message.chat.id,
+            photo=open(generate_heatmap(list(performances)), 'rb')
+        )
+
 
 def setup(bot: Notifier, database: Database):
     flow = SettingsFlow(bot, database)
@@ -113,6 +125,7 @@ def setup(bot: Notifier, database: Database):
     bot.register_message_handler(flow.help, commands=["help"])
     bot.register_message_handler(flow.character, commands=["character"])
     bot.register_message_handler(flow.reset, commands=["reset"])
+    bot.register_message_handler(flow.stats, commands=["stats"])
     bot.register_callback_query_handler(
         flow.select_character, lambda call: call.data == "select_character"
     )

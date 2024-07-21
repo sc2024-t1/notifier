@@ -8,7 +8,8 @@ from src.database.mongo_object import MongoObject
 class Performance(MongoObject):
     collection_name = "performances"
 
-    def __init__(self, database: Database, habit_id: str, performance_id: str, user_id: int, succeeded: bool, completed_at: datetime):
+    def __init__(self, database: Database, habit_id: str, performance_id: str, user_id: int, succeeded: bool,
+                 completed_at: datetime):
         super().__init__(database)
 
         self.habit_id: str = habit_id
@@ -27,5 +28,6 @@ class Performance(MongoObject):
             "habit_id": self.habit_id,
             "performance_id": self.performance_id,
             "user_id": self.user_id,
-            "succeeded": self.succeeded
+            "succeeded": self.succeeded,
+            "completed_at": self.completed_at
         }

@@ -13,6 +13,7 @@ pymongo = "^4.8.0"
 google-generativeai = "^0.7.2"
 seaborn = "^0.13.2"
 matplotlib = "^3.9.1"
+pandas = "^2.2.2"
 
 
 [build-system]

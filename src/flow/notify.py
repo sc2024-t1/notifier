@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 
 from pymongo.database import Database
-from telebot.types import Message
+from telebot.types import Message, ReactionTypeEmoji
 
 from src.bot import Notifier
 from src.database.habit import Habit
@@ -41,6 +41,14 @@ class NotifyFlow:
                 )
 
                 performance.upsert()
+
+                self.bot.set_message_reaction(
+                    message.chat.id,
+                    message.message_id,
+                    reaction=[ReactionTypeEmoji(
+                        emoji="🔥"
+                    )]
+                )
 
                 if len(self.waiting_for_ack[message.from_user.id]) == 0:
                     del self.waiting_for_ack[message.from_user.id]
@@ -86,7 +94,7 @@ def setup(bot: Notifier, database: Database):
     bot.register_message_handler(
         flow.chat,
         func=lambda message: message.text not in ['/add_habit', '/start', '/character',
-                                                  '/notify', '/help', '/reset']
+                                                  '/notify', '/help', '/reset', '/stats']
     )
     bot.register_message_handler(flow.notify, commands=["notify"])
     # TODO: Register the handlers
