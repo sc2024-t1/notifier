@@ -46,6 +46,7 @@ class AddHabitFlow:
             chat_id,
             user_settings.selected_character.ask_habit_time
             .replace("%weekdays%", str(weekdays))
+            .replace("%habit_title%", habit_title)
         )  # TODO: 編輯這個訊息
 
         self.bot.register_next_step_handler(
