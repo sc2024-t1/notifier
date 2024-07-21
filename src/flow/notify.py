@@ -75,7 +75,6 @@ class NotifyFlow:
         habits = Habit.find(self.database, owner_id=message.from_user.id)
 
         for habit in habits:
-            # TODO: Notify for each habit that has reached it's time
             conversation = self.bot.conversation_manager.get_conversation(message.from_user.id)
 
             response = conversation.notify(habit_title=habit.title)
@@ -97,4 +96,3 @@ def setup(bot: Notifier, database: Database):
                                                   '/notify', '/help', '/reset', '/stats']
     )
     bot.register_message_handler(flow.notify, commands=["notify"])
-    # TODO: Register the handlers

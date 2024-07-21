@@ -10,7 +10,6 @@ from src.ui.weekday_picker import Weekdays, WeekdayPicker
 from src.utils import ensure_user_settings
 
 
-# TODO: assigned to 13
 class AddHabitFlow:
     def __init__(self, bot: Notifier, database: Database):
         self.bot: Notifier = bot
@@ -20,7 +19,7 @@ class AddHabitFlow:
         if not (user_settings := ensure_user_settings(self.bot, self.database, message)):
             return
 
-        self.bot.reply_to(message, user_settings.selected_character.ask_habit_title)  # TODO: 編輯這個訊息
+        self.bot.reply_to(message, user_settings.selected_character.ask_habit_title)
 
         self.bot.register_next_step_handler(message, self.habit_title, user_settings=user_settings)
 
@@ -30,7 +29,7 @@ class AddHabitFlow:
         self.bot.reply_to(
             message, user_settings.selected_character.ask_habit_title_ack
             .replace("%habit_title%", habit_title)
-        )  # TODO: 編輯這個訊息
+        )
 
         picker = WeekdayPicker(
             self.bot, message.chat.id,
@@ -47,7 +46,7 @@ class AddHabitFlow:
             user_settings.selected_character.ask_habit_time
             .replace("%weekdays%", str(weekdays))
             .replace("%habit_title%", habit_title)
-        )  # TODO: 編輯這個訊息
+        )
 
         self.bot.register_next_step_handler(
             message, self.habit_times, habit_title=habit_title, weekdays=weekdays, user_settings=user_settings
@@ -57,7 +56,7 @@ class AddHabitFlow:
         times = message.text.split(", ")
 
         if any(time not in ["{:02d}:00".format(i) for i in range(24)] for time in times):
-            self.bot.reply_to(message, user_settings.selected_character.wrong_time_format)  # TODO: 編輯這個訊息
+            self.bot.reply_to(message, user_settings.selected_character.wrong_time_format)
             self.bot.register_next_step_handler(
                 message, self.habit_times, habit_title=habit_title, weekdays=weekdays, user_settings=user_settings
             )
@@ -69,7 +68,7 @@ class AddHabitFlow:
             .replace("%weekdays%", str(weekdays))
             .replace("%times%", ', '.join(times))
             .replace("%habit_title%", habit_title)
-        )  # TODO: 編輯這個訊息
+        )
 
         self.habit_upsert(message, habit_title=habit_title, weekdays=weekdays, times=times, user_settings=user_settings)
 

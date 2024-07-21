@@ -31,9 +31,6 @@ class SettingsFlow:
         self.database: Database = database
 
     def start(self, message: Message):
-        # TODO: /start 指令
-        # TODO: 回覆用戶一個歡迎訊息，其中包含這個機器人的基本使用方法，且讓用戶選擇他的初始角色，選擇角色的邏輯應該在下方的 character 方法中
-        # TODO: (assigned to Ain)
         markup = InlineKeyboardMarkup()
         markup.row_width = 1
         markup.add(InlineKeyboardButton("點我以開始選擇角色", callback_data="select_character"))
