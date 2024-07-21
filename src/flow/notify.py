@@ -21,6 +21,8 @@ class NotifyFlow:
         if not (user_settings := ensure_user_settings(self.bot, self.database, message)):
             return
 
+        self.bot.send_chat_action(message.chat.id, "typing")
+
         conversation = self.bot.conversation_manager.get_conversation(user_settings.user_id)
 
         self.bot.reply_to(message, conversation.ask(message.text.lstrip("/chat ")))
@@ -35,6 +37,8 @@ class NotifyFlow:
 
         if not user_settings:
             raise ValueError("User settings not found.")
+
+        self.bot.send_chat_action(message.chat.id, "typing")
 
         habits = Habit.find(self.database, owner_id=message.from_user.id)
 
