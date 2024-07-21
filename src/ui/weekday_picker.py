@@ -53,6 +53,7 @@ class WeekdayPicker:
             chat_id: int,
             callback: Callable,
             weekdays: Optional[Weekdays] = None,
+            text: str = "Please select the weekdays.",
             *args, **kwargs
     ):
         """
@@ -72,6 +73,7 @@ class WeekdayPicker:
         self.kwargs = kwargs
 
         self.weekdays: Weekdays = weekdays or Weekdays()
+        self.text: str = text
 
         self.message: Optional[Message] = None
 
@@ -82,13 +84,13 @@ class WeekdayPicker:
             self.bot.edit_message_text(
                 chat_id=self.message.chat.id,
                 message_id=self.message.message_id,
-                text="Please select the weekdays:",
+                text=self.text,
                 reply_markup=self.generate_markup()
             )
         else:
             self.message = self.bot.send_message(
                 chat_id=self.chat_id,
-                text="Please select the weekdays:",
+                text=self.text,
                 reply_markup=self.generate_markup()
             )
 

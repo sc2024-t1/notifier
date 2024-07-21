@@ -20,6 +20,7 @@ class Character(MongoObject):
 
             ask_habit_name: str,
             ask_habit_name_ack: str,
+            ask_weekday: str,
             ask_habit_time: str,
             wrong_time_format: str,
             add_habit_done: str,
@@ -35,6 +36,7 @@ class Character(MongoObject):
 
         self.ask_habit_name: str = ask_habit_name
         self.ask_habit_name_ack: str = ask_habit_name_ack  # %habit_name%
+        self.ask_weekday: str = ask_weekday
         self.ask_habit_time: str = ask_habit_time  # %weekdays%
         self.wrong_time_format: str = wrong_time_format
         self.add_habit_done: str = add_habit_done  # %weekdays%, %times%, %times%
@@ -56,6 +58,7 @@ class Character(MongoObject):
 
             "ask_habit_name": self.ask_habit_name,
             "ask_habit_name_ack": self.ask_habit_name_ack,
+            "ask_weekday": self.ask_weekday,
             "ask_habit_time": self.ask_habit_time,
             "wrong_time_format": self.wrong_time_format,
             "add_habit_done": self.add_habit_done,
