@@ -34,10 +34,10 @@ class Character(MongoObject):
         self.avatar_url: str = avatar_url
 
         self.ask_habit_name: str = ask_habit_name
-        self.ask_habit_name_ack: str = ask_habit_name_ack
-        self.ask_habit_time: str = ask_habit_time
+        self.ask_habit_name_ack: str = ask_habit_name_ack  # %habit_name%
+        self.ask_habit_time: str = ask_habit_time  # %weekdays%
         self.wrong_time_format: str = wrong_time_format
-        self.add_habit_done: str = add_habit_done
+        self.add_habit_done: str = add_habit_done  # %weekdays%, %times%, %times%
         self.add_habit_upsert_success: str = add_habit_upsert_success
 
     def unique_identifier(self) -> Dict:
@@ -52,5 +52,12 @@ class Character(MongoObject):
             "description": self.description,
             "initial_prompt": self.initial_prompt,
             "notify_prompt": self.notify_prompt,
-            "avatar_url": self.avatar_url
+            "avatar_url": self.avatar_url,
+
+            "ask_habit_name": self.ask_habit_name,
+            "ask_habit_name_ack": self.ask_habit_name_ack,
+            "ask_habit_time": self.ask_habit_time,
+            "wrong_time_format": self.wrong_time_format,
+            "add_habit_done": self.add_habit_done,
+            "add_habit_upsert_success": self.add_habit_upsert_success
         }
