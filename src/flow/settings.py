@@ -5,6 +5,7 @@ from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, C
 
 from src.bot import Notifier
 from src.database.character import Character
+from src.database.habit import Habit
 from src.database.performance import Performance
 from src.database.user import User
 from src.ui.character_picker import CharacterPicker
@@ -29,6 +30,21 @@ class SettingsFlow:
     def __init__(self, bot: Notifier, database: Database):
         self.bot: Notifier = bot
         self.database: Database = database
+
+    def habits(self, message: Message):
+        if not ensure_user_settings(self.bot, self.database, message):
+            return
+        
+        habits = Habit.find(self.database)
+
+        habit_text = "以下是你目前追蹤中的習慣：\n\n"
+
+        for habit in habits:
+            habit_text += (f"{habit.title}\n"
+                           f"{str(habit.weekdays)}\n"
+                           f"{', '.join(habit.times)}\n\n")
+
+        self.bot.reply_to(message, habit_text)
 
     def start(self, message: Message):
         markup = InlineKeyboardMarkup()
@@ -131,6 +147,7 @@ def setup(bot: Notifier, database: Database):
     flow = SettingsFlow(bot, database)
 
     bot.register_message_handler(flow.start, commands=["start"])
+    bot.register_message_handler(flow.habits, commands=["habits"])
     bot.register_message_handler(flow.help, commands=["help"])
     bot.register_message_handler(flow.character, commands=["character"])
     bot.register_message_handler(flow.reset, commands=["reset"])

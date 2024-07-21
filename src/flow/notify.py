@@ -93,6 +93,6 @@ def setup(bot: Notifier, database: Database):
     bot.register_message_handler(
         flow.chat,
         func=lambda message: message.text not in ['/add_habit', '/start', '/character',
-                                                  '/notify', '/help', '/reset', '/stats']
+                                                  '/notify', '/help', '/reset', '/stats', '/habits']
     )
     bot.register_message_handler(flow.notify, commands=["notify"])
