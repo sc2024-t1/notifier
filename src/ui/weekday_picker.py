@@ -97,31 +97,31 @@ class WeekdayPicker:
 
         markup.add(
             InlineKeyboardButton(
-                f"Mon. {'✅' if self.weekdays.is_enabled(Weekdays.MONDAY) else '❌'}",
+                f"一 {'✅' if self.weekdays.is_enabled(Weekdays.MONDAY) else '❌'}",
                 callback_data=Weekdays.MONDAY
             ),
             InlineKeyboardButton(
-                f"Tue. {' ✅' if self.weekdays.is_enabled(Weekdays.TUESDAY) else '❌'}",
+                f"二 {' ✅' if self.weekdays.is_enabled(Weekdays.TUESDAY) else '❌'}",
                 callback_data=Weekdays.TUESDAY
             ),
             InlineKeyboardButton(
-                f"Wed. {'✅' if self.weekdays.is_enabled(Weekdays.WEDNESDAY) else '❌'}",
+                f"三 {'✅' if self.weekdays.is_enabled(Weekdays.WEDNESDAY) else '❌'}",
                 callback_data=Weekdays.WEDNESDAY
             ),
             InlineKeyboardButton(
-                f"Thu. {'✅' if self.weekdays.is_enabled(Weekdays.THURSDAY) else '❌'}",
+                f"四 {'✅' if self.weekdays.is_enabled(Weekdays.THURSDAY) else '❌'}",
                 callback_data=Weekdays.THURSDAY
             ),
             InlineKeyboardButton(
-                f"Fri. {'✅' if self.weekdays.is_enabled(Weekdays.FRIDAY) else '❌'}",
+                f"五 {'✅' if self.weekdays.is_enabled(Weekdays.FRIDAY) else '❌'}",
                 callback_data=Weekdays.FRIDAY
             ),
             InlineKeyboardButton(
-                f"Sat. {'✅' if self.weekdays.is_enabled(Weekdays.SATURDAY) else '❌'}",
+                f"六 {'✅' if self.weekdays.is_enabled(Weekdays.SATURDAY) else '❌'}",
                 callback_data=Weekdays.SATURDAY
             ),
             InlineKeyboardButton(
-                f"Sun. {'✅' if self.weekdays.is_enabled(Weekdays.SUNDAY) else '❌'}",
+                f"日 {'✅' if self.weekdays.is_enabled(Weekdays.SUNDAY) else '❌'}",
                 callback_data=Weekdays.SUNDAY
             )
         )
